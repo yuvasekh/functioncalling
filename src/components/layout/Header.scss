@@ -1,0 +1,43 @@
+.head {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background-color: dark;
+    height: 8vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+h1
+{
+    color: white;
+}
+.ant-select-item-option-content
+{
+    background-color:gray !important;
+    color: white !important;
+    width: 180px !important;
+}
+.ant-select-selector {
+    background-color: black !important;
+    color: white !important;
+    width: 180px;
+
+}
+
+.ant-select-dropdown {
+    background-color: black !important;
+    color: white;
+
+}
+
+span {
+    color: white !important;
+
+}
+
+h4 {
+    color: white;
+    margin: 20px;
+}
