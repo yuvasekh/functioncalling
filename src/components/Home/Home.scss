@@ -1,0 +1,64 @@
+.home {
+    // background-color: #555252;
+
+    height: 86vh;
+    position: relative;
+    width: 100vw;
+
+    .title {
+        color: black;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        height: 50vh;
+    }
+
+    .input-con {
+        position: absolute;
+        bottom: 10px;
+        display: flex;
+        margin-left: 450px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .ant-input {
+        width: 40vw;
+
+
+
+
+    }
+
+    .allmessages {
+        display: block;
+        text-align: center;
+        height: 80vh;
+        overflow-y: scroll;
+        width: 45vw;
+        margin-left: 440px;
+        -ms-overflow-style: none;
+        /* Internet Explorer 10+ */
+        scrollbar-width: none;
+    }
+
+    .allmessages::-webkit-scrollbar {
+        display: none;
+        /* Safari and Chrome */
+    }
+
+    .user {
+
+        text-align: left;
+    }
+
+    .bot {
+
+        text-align: right;
+    }
+
+    .ant-input-suffix {
+        color: black;
+        background-color: rgb(43, 43, 43);
+    }
+}

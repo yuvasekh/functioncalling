@@ -1,21 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,createContext  } from 'react';
 import { Select, Checkbox } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import './Header.scss';
+import Home from '../Home/Home';
+import { getallFunctionNames } from '../Services/api';
 const { Option } = Select;
-
-const CheckboxDropdown = () => {
+const UserContext = createContext()
+// import { useGlobalState } from './GlobalStateContext';
+// import  {allitems} from '../valuesContext/ValuesStore'
+const CheckboxDropdown = ({ children }) => {
   const [selectedItems, setSelectedItems] = useState([]);
-  const items = [
+  const [items, setItems] = useState([]);
+  // const items = [
+    
+  //   {
+  //     key: "time",
+  //     label: "time"
+  //   },
+  // ];
+  useEffect(()=>
+  {
+  async function fetchData()
+  {
+    var totalFunctionNames=await getallFunctionNames()
+    let dummy=[]
+    console.log(totalFunctionNames,"totalFunctionNames")
+    if(totalFunctionNames.length>0)
     {
-      key: "1",
-      label: "weather"
-    },
-    {
-      key: "2",
-      label: "time"
-    },
-  ];
+      totalFunctionNames.map((item,index)=>
+      {
+        dummy.push({
+          key: item.name,
+          label: item.name,
+        },)
+
+      })
+      setItems(dummy)
+    }
+  }
+  fetchData()
+  },[])
   useEffect(()=>
   {
 console.log(selectedItems,"usefefect")
@@ -40,6 +64,7 @@ console.log(selectedItems,"usefefect")
 
   return (
     <div className='head'>
+      
       <div>
         <h4>Function Calling</h4>
       </div>
@@ -50,8 +75,9 @@ console.log(selectedItems,"usefefect")
           onChange={handleChange}
           mode="multiple"
           showSearch={false}
+          dropdownStyle={{ backgroundColor: 'grey' }}
         >
-          <h1 style={{color:'white'}}>selected count {selectedItems.length}/{items.length}</h1>
+          {/* <h1 style={{color:'white'}}>selected count {selectedItems.length}/{items.length}</h1> */}
           {items.map(item => (
             <Option key={item.key} value={item.key}>
               <Checkbox onChange={(e) => handleCheckboxChange(item.key, e.target.checked)} />
@@ -60,8 +86,14 @@ console.log(selectedItems,"usefefect")
           ))}
         </Select>
       </div>
+      <UserContext.Provider value={items}>
+
+      { children }
+    </UserContext.Provider>
+
     </div>
   );
 };
 
 export default CheckboxDropdown;
+export const useGlobalState = () => useContext(GlobalStateContext);
