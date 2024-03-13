@@ -4,12 +4,13 @@ import { ArrowUpOutlined } from "@ant-design/icons";
 import Header from "../layout/Header";
 import "./Home.scss";
 import { sendcurrentMessage } from "../Services/api";
-
-const Home = () => {
+import { connect, useDispatch } from 'react-redux';
+import { loginuser, showwidgetbox } from '../ReduxStore/actions';
+const Home = ({showwidget}) => {
    const [message, setMessage] = useState("");
    const [allmessages, setAllMessages] = useState([]);
    const messagesEndRef = useRef(null);
-
+console.log(showwidget,"home")
    useEffect(() => {
       scrollToBottom();
    }, [allmessages]);
@@ -34,6 +35,12 @@ const Home = () => {
 
    return (
       <div className="home">
+
+   
+      <div className={showwidget==true?'addfun':'nonefun'}>
+<h1>I am new</h1>
+      </div>
+      <div className="message-con">
          <div>
             {allmessages.length <= 0 ? (
                <>
@@ -72,7 +79,18 @@ const Home = () => {
             />
          </div>
       </div>
+      </div>
    );
 };
+const mapStateToProps = (state) => ({
+   count: state.count,
+   isAuthenticated: state.isAuthenticated,
+   showwidget:state.showwidget
+ });
+ 
+ const mapDispatchToProps = {
+   loginuser,
+   showwidgetbox
+ };
 
-export default Home;
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

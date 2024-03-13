@@ -48,7 +48,7 @@ const CheckboxDropdown = ({ showwidget }) => {
   const show = () => {
     console.log("test");
     console.log(showwidget)
-    dispatch(showwidgetbox(true)); // Dispatch action to show widget box
+    dispatch(showwidgetbox(!showwidget)); // Dispatch action to show widget box
   };
 
   return (

@@ -4,6 +4,7 @@
     height: 86vh;
     position: relative;
     width: 100vw;
+    display: flex;
 
     .title {
         color: black;
@@ -11,8 +12,20 @@
         display: flex;
         align-items: center;
         height: 50vh;
+        width: 100vw;
     }
 
+    .nonefun {
+        display: none;
+    }
+
+    .addfun {
+        width: 20vw;
+    }
+.message-con
+{
+    width: 40vw;
+}
     .input-con {
         position: absolute;
         bottom: 10px;
