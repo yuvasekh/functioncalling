@@ -4,17 +4,22 @@ import { ArrowUpOutlined } from "@ant-design/icons";
 import Header from "../layout/Header";
 import "./Home.scss";
 import { sendcurrentMessage } from "../Services/api";
+import { connect, useDispatch } from 'react-redux';
+import { loginuser, showwidgetbox } from '../ReduxStore/actions';
+import CodeMirror from "@uiw/react-codemirror";
+import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import user from '../../assets/user.png'
 import bot from '../../assets/bot.jpg'
-const Home = () => {
+const Home = ({showwidget}) => {
    const [message, setMessage] = useState("");
    const [allmessages, setAllMessages] = useState([]);
    const [itemsselected, setItemsselected] = useState([]);
    const [isLoading, setIsLoading] = useState(false); // State to track loading
    const messagesEndRef = useRef(null);
-
+console.log(showwidget,"home")
+const code = "console.log('Code Mirror!');";
    useEffect(() => {
       console.log(itemsselected, "item");
    }, [itemsselected]);
@@ -87,6 +92,17 @@ else
 
    return (
       <div className="home">
+
+   
+      <div className={showwidget==true?'addfun':'nonefun'}>
+<h1>I am new</h1>
+<CodeMirror
+      value={code}
+      height="100px"
+      theme={vscodeDark}
+    />
+      </div>
+      <div className="message-con">
          <div style={{marginTop:'8px'}}>
           
             {allmessages.length <= 0 ? (
@@ -143,7 +159,18 @@ else
             />
          </div>
       </div>
+      </div>
    );
 };
+const mapStateToProps = (state) => ({
+   count: state.count,
+   isAuthenticated: state.isAuthenticated,
+   showwidget:state.showwidget
+ });
+ 
+ const mapDispatchToProps = {
+   loginuser,
+   showwidgetbox
+ };
 
-export default Home;
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
