@@ -4,16 +4,19 @@
     height: 100vh;
     position: fixed;
     width: 100vw;
-    top: 56px;
+    top: 53px;
     border-color: white;
- background-color:#2e2a2a;
+ background-color:#3a3636;
  color: white;
 
  display: flex;
  border: 2px solid transparent; /* This creates space for the border */
  border-image: linear-gradient(to right, #474545, #474545) 1; /* This creates the semi-solid border */
 
-
+span
+{
+    color:  white !important;
+}
     .title {
         color: white;
         justify-content: center;
@@ -24,6 +27,7 @@
     }
     ::-webkit-scrollbar {
         height:8px;
+        width: 8px;
         background: #474747;}
         ::-webkit-scrollbar-thumb {
         background-color: #524c4c;
@@ -33,21 +37,52 @@
     }
 
     .addfun {
-        width: 40vw;
+        width: 45vw;
+        // display: flex;
+        // justify-content: center;
+        margin-left: 50px;
     }
 .message-con
 {
-    width: 20vw;
+    width: 55vw;
+    display: flex;
+    justify-content: center;
+    height: 60h;
+    // align-items: center;
 }
+.message-con1
+{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    height: 60h;
+    // align-items: center;
+}
+.cm-editor
+{
+    background-color: rgba(0, 0, 0, 0.568);
+    border-radius: 2%;
+}
+.cm-gutter
+{
+    background-color:  rgba(27, 25, 25, 0.568);
+    border-radius: 2%;
+}
+.btn
+{
+    margin-top: 20px;
+    float: right;
+}
+
     .input-con {
         position: fixed;
         bottom: 33px;
         display: flex;
-        margin-left: 450px;
+        // margin-left: 450px;
         justify-content: center;
         align-items: center;
         background-color:#2e2a2a !important;
-        width: 40vw;
+        width: 45vw;
     }
     .ant-input-affix-wrapper
     {
@@ -76,7 +111,7 @@ border-color: #3b3636 !important
         height: 80vh;
         overflow-y: scroll;
         width: 45vw;
-        margin-left: 440px;
+        // margin-left: 440px;
         -ms-overflow-style: none;
         /* Internet Explorer 10+ */
         scrollbar-width: none;

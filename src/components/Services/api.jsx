@@ -24,15 +24,17 @@ export async function getallFunctionNames() {
         });
         return temp
 }
-export async function sendSelectedFunctions() {
+export async function addFunction(content) {
+    let temp;
     await axios
-        .post(`${rootUrl}api/textupload`, { content: text })
+        .post(`${rootUrl}api/addfunction`, { input: content })
         .then((response) => {
             temp.push(response.data);
         })
         .catch((error) => {
             console.error("Error:", error.message);
         });
+        return temp
 }
 export async function sendcurrentMessage(data) {
     let temp
