@@ -1,99 +1,92 @@
-import React, { useEffect, useState,createContext  } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Select, Checkbox } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import './Header.scss';
-import Home from '../Home/Home';
 import { getallFunctionNames } from '../Services/api';
+import { connect, useDispatch } from 'react-redux';
+import { loginuser, showwidgetbox } from '../ReduxStore/actions';
+
 const { Option } = Select;
-const UserContext = createContext()
-// import { useGlobalState } from './GlobalStateContext';
-// import  {allitems} from '../valuesContext/ValuesStore'
-const CheckboxDropdown = ({ children }) => {
+
+const CheckboxDropdown = ({ showwidget }) => {
+  const dispatch = useDispatch();
   const [selectedItems, setSelectedItems] = useState([]);
   const [items, setItems] = useState([]);
-  // const items = [
-    
-  //   {
-  //     key: "time",
-  //     label: "time"
-  //   },
-  // ];
-  useEffect(()=>
-  {
-  async function fetchData()
-  {
-    var totalFunctionNames=await getallFunctionNames()
-    let dummy=[]
-    console.log(totalFunctionNames,"totalFunctionNames")
-    if(totalFunctionNames.length>0)
-    {
-      totalFunctionNames.map((item,index)=>
-      {
-        dummy.push({
-          key: item.name,
-          label: item.name,
-        },)
 
-      })
-      setItems(dummy)
+  useEffect(() => {
+    async function fetchData() {
+      var totalFunctionNames = [
+        {
+          name: "time",
+          label: "time"
+        },
+      ];
+      let dummy = [];
+      if (totalFunctionNames.length > 0) {
+        totalFunctionNames.forEach(item => {
+          dummy.push({
+            key: item.name,
+            label: item.name,
+          });
+        });
+        setItems(dummy);
+      }
     }
-  }
-  fetchData()
-  },[])
-  useEffect(()=>
-  {
-console.log(selectedItems,"usefefect")
-  },[selectedItems.length])
-  const handleChange = (value) => {
-    // console.log(value,"check")
-    // setSelectedItems(value);
-  };
+    fetchData();
+  }, []);
+
   const handleCheckboxChange = (itemKey, checked) => {
     let updatedSelectedItems;
     if (checked) {
-        // console.log("iff","itemKey")
       updatedSelectedItems = [...selectedItems, itemKey];
     } else {
-        // console.log("else")
       updatedSelectedItems = selectedItems.filter(key => key !== itemKey);
     }
-    console.log(selectedItems,"selece")
     setSelectedItems(updatedSelectedItems);
   };
- 
+
+  const show = () => {
+    console.log("test");
+    console.log(showwidget)
+    dispatch(showwidgetbox(true)); // Dispatch action to show widget box
+  };
 
   return (
     <div className='head'>
-      
+      <EditOutlined onClick={show} />
       <div>
         <h4>Function Calling</h4>
       </div>
       <div>
-      <Select
+        <Select
           placeholder="Select Functions"
           value={[]}
-          onChange={handleChange}
+ 
           mode="multiple"
           showSearch={false}
           dropdownStyle={{ backgroundColor: 'grey' }}
         >
-          {/* <h1 style={{color:'white'}}>selected count {selectedItems.length}/{items.length}</h1> */}
           {items.map(item => (
             <Option key={item.key} value={item.key}>
               <Checkbox onChange={(e) => handleCheckboxChange(item.key, e.target.checked)} />
-              <span style={{color:'white',marginLeft:'7px'}}>{item.label}</span>
+              <span style={{ color: 'white', marginLeft: '7px' }}>{item.label}</span>
             </Option>
           ))}
         </Select>
       </div>
-      <UserContext.Provider value={items}>
-
-      { children }
-    </UserContext.Provider>
-
     </div>
   );
 };
 
-export default CheckboxDropdown;
-export const useGlobalState = () => useContext(GlobalStateContext);
+const mapStateToProps = (state) => ({
+  count: state.count,
+  isAuthenticated: state.isAuthenticated,
+  showwidget:state.showwidget
+});
+
+const mapDispatchToProps = {
+  loginuser,
+  showwidgetbox
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CheckboxDropdown);
