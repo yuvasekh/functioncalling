@@ -34,10 +34,10 @@ export async function sendSelectedFunctions() {
             console.error("Error:", error.message);
         });
 }
-export async function sendcurrentMessage() {
+export async function sendcurrentMessage(data) {
     let temp
     await axios
-        .post(`${rootUrl}api/askWithFunctions`, { content: text })
+        .post(`${rootUrl}api/askWithFunctions`, { input: data })
         .then((response) => {
             temp=response.data;
         })
