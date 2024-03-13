@@ -6,11 +6,14 @@ import "./Home.scss";
 import { sendcurrentMessage } from "../Services/api";
 import { connect, useDispatch } from 'react-redux';
 import { loginuser, showwidgetbox } from '../ReduxStore/actions';
+import CodeMirror from "@uiw/react-codemirror";
+import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 const Home = ({showwidget}) => {
    const [message, setMessage] = useState("");
    const [allmessages, setAllMessages] = useState([]);
    const messagesEndRef = useRef(null);
 console.log(showwidget,"home")
+const code = "console.log('Code Mirror!');";
    useEffect(() => {
       scrollToBottom();
    }, [allmessages]);
@@ -39,6 +42,11 @@ console.log(showwidget,"home")
    
       <div className={showwidget==true?'addfun':'nonefun'}>
 <h1>I am new</h1>
+<CodeMirror
+      value={code}
+      height="100px"
+      theme={vscodeDark}
+    />
       </div>
       <div className="message-con">
          <div>
