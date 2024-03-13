@@ -197,6 +197,34 @@ console.log(data,"data")
                     let function_response = "";
 
                     switch (function_name) {
+                        case "search_flights":
+                            let flightArgs = JSON.parse(message.function_call.arguments);
+                            function_response = search_flights(
+                                flightArgs.departure_location,
+                                flightArgs.destination,
+                                flightArgs.departure_date,
+                                flightArgs.return_date,
+                                flightArgs.max_price
+                            );
+                            break;
+                        case "get_restaurants":
+                            let restaurantArgs = JSON.parse(message.function_call.arguments);
+                            function_response = get_restaurants(
+                                restaurantArgs.location,
+                                restaurantArgs.cuisine,
+                                restaurantArgs.price_range,
+                                restaurantArgs.rating
+                            );
+                            break;
+                        case "find_events":
+                            let eventArgs = JSON.parse(message.function_call.arguments);
+                            function_response = find_events(
+                                eventArgs.location,
+                                eventArgs.category,
+                                eventArgs.start_date,
+                                eventArgs.end_date
+                            );
+                            break;
                         case "get_current_weather":
                             let weatherArgs = JSON.parse(message.function_call.arguments);
                             function_response = get_current_weather(
@@ -221,6 +249,7 @@ console.log(data,"data")
                         default:
                             throw new Error(`Unsupported function: ${function_name}`);
                     }
+                    
 
                     executedFunctions[function_name] = true;
 

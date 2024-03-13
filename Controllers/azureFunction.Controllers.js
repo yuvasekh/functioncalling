@@ -1,13 +1,14 @@
 const { insertFunctions, FunctionNames, AllFunctionNames } = require("../Utils/SqlQueries");
 
 module.exports.addfunction = async (req, res) => {
-    //    console.log(req.body.input)
-       let data=req.body
-    //    console.log(JSON.parse(data),"data")
-    //    console.log(typeof(data),"data")
+       console.log(req.body.input)
+       let data=req.body.input
+       console.log(JSON.parse(data),"data")
+       let datalist=JSON.parse(data)
+       console.log(typeof(data),"data")
     try {
         if (req.body) {
-            await insertFunctions(data.functions)
+            await insertFunctions(datalist.functions)
             res.status(200).json("Inserted");
         }
         else {
