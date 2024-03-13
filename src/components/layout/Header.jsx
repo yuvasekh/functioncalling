@@ -37,6 +37,7 @@ const CheckboxDropdown = ({ showwidget }) => {
     } else {
       updatedSelectedItems = selectedItems.filter(key => key !== itemKey);
     }
+    localStorage.setItem('items', JSON.stringify(updatedSelectedItems))
     setSelectedItems(updatedSelectedItems);
   };
 
