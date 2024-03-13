@@ -82,6 +82,7 @@ function search_flights(departure_location, destination, departure_date, return_
             flight.price <= max_price
         );
     });
+    console.log(filteredFlights,"filteredFlights")
 
     return JSON.stringify(filteredFlights);
 }

@@ -1,4 +1,4 @@
-const { get_current_weather, get_clothing_recommendations, search_hotels } = require("../Utils/Resources");
+const { get_current_weather, get_clothing_recommendations, search_hotels, search_flights, get_restaurants, find_events } = require("../Utils/Resources");
 const axios = require('axios');
 const { FunctionNames } = require("../Utils/SqlQueries");
 module.exports.getResponseAzure = async (req, res) => {
@@ -252,7 +252,7 @@ console.log(data,"data")
                     
 
                     executedFunctions[function_name] = true;
-
+console.log(function_response,"fun")
                     data.messages.push({
                         role: "function",
                         name: function_name,
