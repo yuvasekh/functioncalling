@@ -1,16 +1,22 @@
-function get_current_weather(location, unit = "fahrenheit") {
+const axios=require('axios')
+async function get_current_weather(config) {
     console.log(
-        `Called get_current_weather with location: ${location} and unit: ${unit}`
+        `Called get_current_weather with config: ${config} `
     );
+    let temp="";
 
-
-    return JSON.stringify({
-        location: location,
-        temperature: "32",
-        unit: unit,
-        forecast: ["sunny", "windy"],
+    await axios.request(config)
+    .then((response) => {
+     
+      temp=JSON.stringify(response.data)
+    })
+    .catch((error) => {
+      console.log(error);
     });
+    console.log(JSON.stringify(temp));
+    return temp
 }
+
 function get_clothing_recommendations(temperature) {
     console.log(
         `Called get_clothing_recommendations with temperature: ${temperature}`
@@ -49,6 +55,8 @@ function search_hotels(location, max_price, features) {
             hotel.features.includes("free breakfast")
         );
     });
+
+    console.log(filteredHotels,"filter")
 
     return JSON.stringify(filteredHotels);
 }
@@ -160,7 +168,20 @@ function find_events(location, category, start_date, end_date) {
 
     return JSON.stringify(filteredEvents);
 }
-
+function processRequest(apiKey, apiUrl,config) {
+ 
+  
+    
+    axios.request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    
+}
+module.exports.processRequest = processRequest
 module.exports.get_clothing_recommendations = get_clothing_recommendations
 module.exports.get_current_weather = get_current_weather
 module.exports.search_hotels = search_hotels

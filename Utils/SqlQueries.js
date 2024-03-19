@@ -32,7 +32,7 @@ sql
     async function FunctionNames(functionNames) {
         const formattedString = functionNames.map(item => `'${item}'`).join(", ");
         console.log(functionNames, "sqlquery", formattedString);
-        const selectQuery = `select name, description, parameters from azurefunctions where name In (${formattedString})`;
+        const selectQuery = `select name, description, parameters,configuration from azurefunctions where name In (${formattedString})`;
         console.log(selectQuery, "query");
     
         try {
@@ -71,10 +71,10 @@ async function insertFunctions(functions) {
 
         
         for (const func of functions) {
-            console.log(func.parameters)
+            console.log(func.config,"config")
             const insertQuery = `
-                INSERT INTO azurefunctions (name, description, parameters)
-                VALUES ('${func.name}', '${func.description}', N'${JSON.stringify(func.parameters)}');
+                INSERT INTO azurefunctions (name, description, parameters,configuration)
+                VALUES ('${func.name}', '${func.description}', N'${JSON.stringify(func.parameters)}','${JSON.stringify(func.config)}');
             `;
             
             await pool.request().query(insertQuery);

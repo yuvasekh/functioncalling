@@ -3,7 +3,7 @@ const { insertFunctions, FunctionNames, AllFunctionNames } = require("../Utils/S
 module.exports.addfunction = async (req, res) => {
        console.log(req.body.input)
        let data=req.body.input
-       console.log(JSON.parse(data),"data")
+    //    console.log(JSON.parse(data),"data")
        let datalist=JSON.parse(data)
        console.log(typeof(data),"data")
     try {

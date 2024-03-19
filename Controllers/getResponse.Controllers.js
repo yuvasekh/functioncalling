@@ -132,24 +132,22 @@ module.exports.getResponseAzure = async (req, res) => {
         res.status(500).json({ message: error });
     }
 };
+
+
 module.exports.askWithFunctions = async (req, res) => {
-    // console.log("calling",req.body)
-let requestbody
-    const {content,functionNames}=req.body.input
+    let requestbody;
+    const { content, functionNames } = req.body.input;
     try {
-        if (content && functionNames)
-            var functionInfo = await FunctionNames(functionNames)
-if(functionInfo.length>0)
-{
-
-    functionInfo.map((item,index)=>
-    {
-        functionInfo[index].parameters = JSON.parse(functionInfo[index].parameters)
-        
-    })
-
-}
-console.log(JSON.stringify(functionInfo), "getfromdb")
+        if (content && functionNames) {
+            var functionInfo = await FunctionNames(functionNames);
+            if (functionInfo.length > 0) {
+                functionInfo.map((item, index) => {
+                    functionInfo[index].parameters = JSON.parse(functionInfo[index].parameters);
+                    functionInfo[index].configuration = JSON.parse(functionInfo[index].configuration);
+                });
+            }
+            console.log(functionInfo, "getfromdb");
+        }
 
         async function run_conversation() {
             const baseURL = "https://openai-test-service.openai.azure.com/openai/deployments/gpt-35-turbo-16k/chat/completions?api-version=2023-07-01-preview";
@@ -163,29 +161,23 @@ console.log(JSON.stringify(functionInfo), "getfromdb")
                 messages: [
                     {
                         role: "user",
-                        content:
-                            content,
+                        content: content,
                     },
                 ],
                 model: "gpt-35-turbo",
-
                 functions: functionInfo,
-
                 function_call: "auto",
             };
-console.log(data,"data")
+            console.log(data, "data");
             try {
                 console.log(`Sending initial request to OpenAI API...`);
                 let response = await axios.post(baseURL, data, { headers });
                 response = response.data;
-                console.log(response.choices[0].message, "response")
+                console.log(response.choices[0].message, "response");
 
                 let executedFunctions = {};
 
-                while (
-                    response.choices[0].message.function_call &&
-                    response.choices[0].finish_reason !== "stop"
-                ) {
+                while (response.choices[0].message.function_call && response.choices[0].finish_reason !== "stop") {
                     console.log("Inside while loop");
                     let message = response.choices[0].message;
                     const function_name = message.function_call.name;
@@ -196,63 +188,13 @@ console.log(data,"data")
 
                     let function_response = "";
 
-                    switch (function_name) {
-                        case "search_flights":
-                            let flightArgs = JSON.parse(message.function_call.arguments);
-                            function_response = search_flights(
-                                flightArgs.departure_location,
-                                flightArgs.destination,
-                                flightArgs.departure_date,
-                                flightArgs.return_date,
-                                flightArgs.max_price
-                            );
-                            break;
-                        case "get_restaurants":
-                            let restaurantArgs = JSON.parse(message.function_call.arguments);
-                            function_response = get_restaurants(
-                                restaurantArgs.location,
-                                restaurantArgs.cuisine,
-                                restaurantArgs.price_range,
-                                restaurantArgs.rating
-                            );
-                            break;
-                        case "find_events":
-                            let eventArgs = JSON.parse(message.function_call.arguments);
-                            function_response = find_events(
-                                eventArgs.location,
-                                eventArgs.category,
-                                eventArgs.start_date,
-                                eventArgs.end_date
-                            );
-                            break;
-                        case "get_current_weather":
-                            let weatherArgs = JSON.parse(message.function_call.arguments);
-                            function_response = get_current_weather(
-                                weatherArgs.location,
-                                weatherArgs.unit
-                            );
-                            break;
-                        case "get_clothing_recommendations":
-                            let recommendationArgs = JSON.parse(message.function_call.arguments);
-                            function_response = get_clothing_recommendations(
-                                recommendationArgs.temperature
-                            );
-                            break;
-                        case "search_hotels":
-                            let hotelArgs = JSON.parse(message.function_call.arguments);
-                            function_response = search_hotels(
-                                hotelArgs.location,
-                                hotelArgs.max_price,
-                                hotelArgs.features
-                            );
-                            break;
-                        default:
-                            throw new Error(`Unsupported function: ${function_name}`);
-                    }
-                    
+                    console.log(functionInfo[0].configuration, "check", function_name);
+                    function_response = await get_current_weather(
+                        functionInfo[0].configuration
+                    );
 
                     executedFunctions[function_name] = true;
-console.log(function_response,"fun")
+                    console.log(function_response, "fun");
                     data.messages.push({
                         role: "function",
                         name: function_name,
@@ -260,7 +202,7 @@ console.log(function_response,"fun")
                     });
 
                     console.log(`Sending request to OpenAI with ${function_name} response...`);
-                    requestbody= data
+                    requestbody = data;
                     response = await axios.post(baseURL, data, { headers });
                     response = response.data;
                 }
@@ -275,7 +217,7 @@ console.log(function_response,"fun")
         run_conversation()
             .then((response) => {
                 console.log(response.choices[0].message.content);
-                res.status(200).json({requestbody:requestbody,response:response.choices[0].message.content});
+                res.status(200).json({ requestbody: requestbody, response: response.choices[0].message.content });
             })
             .catch((error) => {
                 console.error("Error:", error);
